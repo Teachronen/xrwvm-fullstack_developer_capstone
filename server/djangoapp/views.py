@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
 import logging
 import json
 
@@ -84,7 +82,8 @@ def get_dealerships(request, state="All"):
         return JsonResponse({"status": 200, "dealers": response})
     else:
         return JsonResponse({"status": 500, "dealers": []})
-        
+
+
 def get_dealer_reviews(request, dealer_id):
     if dealer_id:
         endpoint = "/fetchReviews/dealer/" + str(dealer_id)
@@ -109,6 +108,7 @@ def get_dealer_reviews(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
+
 def get_dealer_details(request, dealer_id):
     if dealer_id:
         endpoint = "/fetchDealer/" + str(dealer_id)
@@ -123,6 +123,7 @@ def get_dealer_details(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
+
 @csrf_exempt
 def add_review(request):
     print("request.user =", request.user)
@@ -135,15 +136,25 @@ def add_review(request):
             print("add_review backend response =", response)
 
             if response:
-                return JsonResponse({"status": 200, "response": response}, status=200)
+                return JsonResponse(
+                    {"status": 200, "response": response},
+                    status=200)
             else:
-                return JsonResponse({"status": 500, "message": "Failed to post review"}, status=500)
+                return JsonResponse(
+                    {"status": 500,
+                     "message": "Failed to post review"},
+                    status=500)
         except Exception as e:
             print("Error in posting review:", e)
-            return JsonResponse({"status": 500, "message": "Error in posting review"}, status=500)
+            return JsonResponse(
+                {"status": 500, "message": "Error in posting review"},
+                status=500)
     else:
-        return JsonResponse({"status": 403, "message": "Unauthorized"}, status=403)
-        
+        return JsonResponse(
+            {"status": 403, "message": "Unauthorized"},
+            status=403)
+
+
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
