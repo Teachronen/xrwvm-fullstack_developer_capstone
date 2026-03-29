@@ -8,12 +8,17 @@ ENV_PATH = os.path.join(BASE_DIR, ".env")
 load_dotenv(dotenv_path=ENV_PATH)
 
 backend_url = os.getenv("backend_url", "http://localhost:3030").strip()
-sentiment_analyzer_url = os.getenv("sentiment_analyzer_url", "http://localhost:5050/").strip()
+sentiment_analyzer_url = os.getenv(
+    "sentiment_analyzer_url",
+    "http://localhost:5050/",
+).strip()
 
 print("ENV_PATH =", ENV_PATH)
 print("backend_url =", repr(backend_url))
 print("sentiment_analyzer_url =", repr(sentiment_analyzer_url))
 # def get_request(endpoint, **kwargs):
+
+
 def get_request(endpoint, **kwargs):
     params = ""
     if kwargs:
@@ -34,9 +39,7 @@ def get_request(endpoint, **kwargs):
         print("Network exception occurred:", repr(e))
         return None
 
-# Add code for get requests to back end
 
-# def analyze_review_sentiments(text):
 def analyze_review_sentiments(text):
     request_url = sentiment_analyzer_url + "analyze/" + text
     try:
@@ -45,10 +48,8 @@ def analyze_review_sentiments(text):
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
         print("Network exception occurred")
-# request_url = sentiment_analyzer_url+"analyze/"+text
-# Add code for retrieving sentiments
 
-# def post_review(data_dict):
+
 def post_review(data_dict):
     request_url = backend_url + "/insert_review"
     print("POST to", request_url)
@@ -63,5 +64,3 @@ def post_review(data_dict):
     except Exception as e:
         print("Network exception occurred in post_review:", repr(e))
         return None
-        
-# Add code for posting review
